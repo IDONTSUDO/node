@@ -2,7 +2,6 @@
   "name": "node-typescript-boilerplate",
   "version": "0.0.0",
   "description": "Minimalistic boilerplate to quick-start Node.js development in TypeScript.",
-  "type": "module",
   "engines": {
     "node": ">= 18.12 <19"
   },
@@ -17,10 +16,11 @@
     "typescript": "~4.9"
   },
   "scripts": {
-    "dev": "cross-env NODE_ENV=development concurrently \"tsc --watch\" \"nodemon -q build/src/main.js\"",
+    "dev": "npm run build && concurrently 'npm run build:watch' 'npm run server:start'",
+    "server:start": "nodemon --delay 0.1 -e '*' --watch build 'node build/src/main.js'",
+    "build:watch": "tsc --watch-only",
     "clean": "rimraf coverage build tmp",
     "build": "tsc -p tsconfig.json",
-    "build:watch": "tsc -w -p tsconfig.json",
     "build:release": "npm run clean && tsc -p tsconfig.release.json",
     "test": "jest --coverage",
     "prettier": "prettier --config .prettierrc --write .",
@@ -32,6 +32,8 @@
     "concurrently": "^7.6.0",
     "cross-env": "^7.0.3",
     "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
     "tslib": "~2.4"
   },
   "volta": {
